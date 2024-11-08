@@ -1,157 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Branch and Dual Branch Form</title>
-</head>
-<body>
+from flask import Flask, request
 
-<form id="branchForm" action="submit_form.py" method="POST">
+app = Flask(__name__)
 
-    <!-- Question 1: Main Branch -->
-    <label for="branch">What is your branch?</label>
-    <select id="branch" name="branch" onchange="handleBranchSelection()">
-        <option value="" selected disabled>Select your branch</option>
-        <option value="CS">CS</option>
-        <option value="MNC">MNC</option>
-        <option value="ECE">ECE</option>
-        <option value="EEE">EEE</option>
-        <option value="ENI">ENI</option>
-        <option value="MECH">MECH</option>
-        <option value="CHEM">CHEM</option>
-        <option value="CIVIL">CIVIL</option>
-        <option value="PHARMA">PHARMA</option>
-    </select>
+@app.route('/submit_form', methods=['POST'])
+def submit_form():
+    # Branches
+    CS = float(request.form.get("CS", 0))
+    MNC = float(request.form.get("MNC", 0))
+    ECE = float(request.form.get("ECE", 0))
+    EEE = float(request.form.get("EEE", 0))
+    ENI = float(request.form.get("ENI", 0))
+    MECH = float(request.form.get("MECH", 0))
+    CHEM = float(request.form.get("CHEM", 0))
+    CIVIL = float(request.form.get("CIVIL", 0))
+    PHARMA = float(request.form.get("PHARMA", 0))
+
+    # Dual Branches
+    ECO = float(request.form.get("ECO", 0))
+    MATH = float(request.form.get("MATH", 0))
+    PHYSICS = float(request.form.get("PHYSICS", 0))
+    CHEMISTRY = float(request.form.get("CHEMISTRY", 0))
+    BIO = float(request.form.get("BIO", 0))
+
+    # Opels
+    Aeronautics = int(request.form.get("Aeronautics", 0))
+    Entrepreneurship = int(request.form.get("Entrepreneurship", 0))
+    Finance = int(request.form.get("Finance", 0))
+    MaterialSciences = int(request.form.get("MaterialSciences", 0))
+    RoboticsAndAutomation = int(request.form.get("RoboticsAndAutomation", 0))
+
+    # Displaying variables for debugging purposes (or further processing in a real application)
+    print(f"Branch Values:")
+    print(f"CS: {CS}, MNC: {MNC}, ECE: {ECE}, EEE: {EEE}, ENI: {ENI}, MECH: {MECH}, CHEM: {CHEM}, CIVIL: {CIVIL}, PHARMA: {PHARMA}")
     
-    <!-- Temporary question for liking the branch -->
-    <div id="likeBranchQuestion" style="display: none;">
-        <label>Do you like your branch?</label>
-        <input type="radio" name="likeBranch" value="YES" onclick="setBranchValue(7.5)"> Yes
-        <input type="radio" name="likeBranch" value="NO" onclick="setBranchValue(2.5)"> No
-    </div>
-
-    <!-- Question 2: Dual Branch -->
-    <label for="dualBranch">What is your Dual Branch?</label>
-    <select id="dualBranch" name="dualBranch" onchange="handleDualBranchSelection()">
-        <option value="" selected disabled>Select your dual branch</option>
-        <option value="ECO">ECO</option>
-        <option value="MATH">MATH</option>
-        <option value="PHYSICS">PHYSICS</option>
-        <option value="CHEMISTRY">CHEMISTRY</option>
-        <option value="BIO">BIO</option>
-        <option value="None">None</option>
-    </select>
+    print("\nDual Branch Values:")
+    print(f"ECO: {ECO}, MATH: {MATH}, PHYSICS: {PHYSICS}, CHEMISTRY: {CHEMISTRY}, BIO: {BIO}")
     
-    <!-- Question 3: Rate the other branches -->
-    <div id="rateBranches" style="display: none;">
-        <label>Rate the other branches based on your interest (0 to 5):</label><br>
-        <!-- JavaScript will dynamically add radio buttons for branches based on selection -->
-    </div>
-
-    <!-- Question 4: Opels with Checkboxes -->
-    <div id="opels" style="display: none;">
-        <label>Select your interest level for the following Opels:</label><br>
-        <div>
-            <label>Aeronautics:</label>
-            <input type="checkbox" name="Aeronautics" value="No"> No
-            <input type="checkbox" name="Aeronautics" value="Maybe"> Maybe
-            <input type="checkbox" name="Aeronautics" value="Yes"> Yes
-        </div>
-        <div>
-            <label>Entrepreneurship:</label>
-            <input type="checkbox" name="Entrepreneurship" value="No"> No
-            <input type="checkbox" name="Entrepreneurship" value="Maybe"> Maybe
-            <input type="checkbox" name="Entrepreneurship" value="Yes"> Yes
-        </div>
-        <div id="financeOpel">
-            <label>Finance:</label>
-            <input type="checkbox" name="Finance" value="No"> No
-            <input type="checkbox" name="Finance" value="Maybe"> Maybe
-            <input type="checkbox" name="Finance" value="Yes"> Yes
-        </div>
-        <div>
-            <label>Material Sciences:</label>
-            <input type="checkbox" name="MaterialSciences" value="No"> No
-            <input type="checkbox" name="MaterialSciences" value="Maybe"> Maybe
-            <input type="checkbox" name="MaterialSciences" value="Yes"> Yes
-        </div>
-        <div>
-            <label>Robotics and Automation:</label>
-            <input type="checkbox" name="RoboticsAndAutomation" value="No"> No
-            <input type="checkbox" name="RoboticsAndAutomation" value="Maybe"> Maybe
-            <input type="checkbox" name="RoboticsAndAutomation" value="Yes"> Yes
-        </div>
-    </div>
-
-    <!-- Submit Button -->
-    <button type="submit">Submit</button>
-</form>
-
-<script>
-// Variables to store branch values
-let branchValue = 0;
-let dualBranchValue = 0;
-
-// Handle main branch selection and display the "like your branch" question
-function handleBranchSelection() {
-    const branch = document.getElementById('branch').value;
-    document.getElementById('likeBranchQuestion').style.display = 'block';
+    print("\nOpel Values:")
+    print(f"Aeronautics: {Aeronautics}, Entrepreneurship: {Entrepreneurship}, Finance: {Finance}, MaterialSciences: {MaterialSciences}, RoboticsAndAutomation: {RoboticsAndAutomation}")
     
-    if (branch === 'MNC') {
-        // Hide CS and MATH in the rating section later
-        document.getElementById('rateBranches').style.display = 'none';
-    }
-}
+    # Store data or perform additional processing as needed
 
-// Set branch value based on liking the branch
-function setBranchValue(value) {
-    branchValue = value;
-    document.getElementById('likeBranchQuestion').style.display = 'none';
-}
+    return "Data submitted and stored successfully."
 
-// Handle dual branch selection
-function handleDualBranchSelection() {
-    const dualBranch = document.getElementById('dualBranch').value;
-    if (dualBranch !== 'None') {
-        dualBranchValue = 7.5;
-        if (dualBranch === 'ECO') {
-            document.getElementById('financeOpel').style.display = 'none';  // Hide Finance opel for ECO dual branch
-        }
-    }
-    document.getElementById('rateBranches').style.display = 'block';
-    document.getElementById('opels').style.display = 'block';
-}
-
-// Dynamically create rating options for branches (excluding PHARMA & MNC)
-function createRatingOptions() {
-    const branches = ["CS", "ECE", "EEE", "ENI", "MECH", "CHEM", "CIVIL"];
-    const rateBranchesDiv = document.getElementById('rateBranches');
-    branches.forEach(branch => {
-        if (branch === 'CS' && document.getElementById('branch').value === 'MNC') return;
-        if (branch === 'MATH' && document.getElementById('branch').value === 'MNC') return;
-
-        let label = document.createElement('label');
-        label.textContent = `${branch}: `;
-        
-        for (let i = 0; i <= 5; i++) {
-            let radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = branch;
-            radio.value = i;
-            label.appendChild(radio);
-            label.appendChild(document.createTextNode(i));
-        }
-        
-        rateBranchesDiv.appendChild(label);
-        rateBranchesDiv.appendChild(document.createElement('br'));
-    });
-}
-
-// Initialize rating options when the form is loaded
-createRatingOptions();
-</script>
-
-</body>
-</html>
+if __name__ == '__main__':
+    app.run(debug=True)
 
