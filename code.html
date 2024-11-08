@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Branch Survey Form</title>
+    <title>MINOR FINDER</title>
 </head>
 <body>
-    <h1>Branch Survey Form</h1>
-    <form id="surveyForm" action="/submit" method="POST">
+    <h1>MINOR FINDER</h1>
+    <form id="surveyForm" action="http://127.0.0.1:5000/submit" method="POST">
         
         <!-- Branch Selection -->
         <label for="branch">What is your branch?</label>
@@ -24,11 +24,11 @@
             <option value="PHARMA">PHARMA</option>
         </select>
         
-        <!-- Temporary Question: Do you like your branch? -->
+        <!-- Branch Like Question -->
         <div id="branchLikeQuestion" style="display: none;">
             <label>Do you like your branch?</label>
-            <input type="radio" name="branchLike" value="yes" onclick="assignBranchValue(7.5)"> Yes
-            <input type="radio" name="branchLike" value="no" onclick="assignBranchValue(2.5)"> No
+            <input type="radio" name="branchLike" value="7.5"> Yes
+            <input type="radio" name="branchLike" value="2.5"> No
         </div>
 
         <!-- Dual Branch Selection -->
@@ -52,46 +52,59 @@
         <!-- Opel Selection -->
         <h3>Select Opels</h3>
         <div id="opels">
-            <div id="Aeronautics">
+            <div>
                 <label>Aeronautics</label>
-                <input type="checkbox" name="Aeronautics" value="0"> No
-                <input type="checkbox" name="Aeronautics" value="3"> Maybe
-                <input type="checkbox" name="Aeronautics" value="5"> Yes
+                <input type="radio" name="Aeronautics" value="0"> No
+                <input type="radio" name="Aeronautics" value="3"> Maybe
+                <input type="radio" name="Aeronautics" value="5"> Yes
             </div>
-            <div id="Entrepreneurship">
+            <div>
                 <label>Entrepreneurship</label>
-                <input type="checkbox" name="Entrepreneurship" value="0"> No
-                <input type="checkbox" name="Entrepreneurship" value="3"> Maybe
-                <input type="checkbox" name="Entrepreneurship" value="5"> Yes
+                <input type="radio" name="Entrepreneurship" value="0"> No
+                <input type="radio" name="Entrepreneurship" value="3"> Maybe
+                <input type="radio" name="Entrepreneurship" value="5"> Yes
             </div>
-            <div id="Finance">
+            <div>
                 <label>Finance</label>
-                <input type="checkbox" name="Finance" value="0"> No
-                <input type="checkbox" name="Finance" value="3"> Maybe
-                <input type="checkbox" name="Finance" value="5"> Yes
+                <input type="radio" name="Finance" value="0"> No
+                <input type="radio" name="Finance" value="3"> Maybe
+                <input type="radio" name="Finance" value="5"> Yes
             </div>
-            <div id="MaterialSciences">
+            <div>
                 <label>Material Sciences</label>
-                <input type="checkbox" name="MaterialSciences" value="0"> No
-                <input type="checkbox" name="MaterialSciences" value="3"> Maybe
-                <input type="checkbox" name="MaterialSciences" value="5"> Yes
+                <input type="radio" name="MaterialSciences" value="0"> No
+                <input type="radio" name="MaterialSciences" value="3"> Maybe
+                <input type="radio" name="MaterialSciences" value="5"> Yes
             </div>
-            <div id="RoboticsAndAutomation">
+            <div>
                 <label>Robotics and Automation</label>
-                <input type="checkbox" name="RoboticsAndAutomation" value="0"> No
-                <input type="checkbox" name="RoboticsAndAutomation" value="3"> Maybe
-                <input type="checkbox" name="RoboticsAndAutomation" value="5"> Yes
+                <input type="radio" name="RoboticsAndAutomation" value="0"> No
+                <input type="radio" name="RoboticsAndAutomation" value="3"> Maybe
+                <input type="radio" name="RoboticsAndAutomation" value="5"> Yes
             </div>
         </div>
 
+        <!-- Programming Languages -->
+        <label for="programmingLanguages">What programming languages do you know?</label>
+        <div id="programmingLanguages">
+            <input type="checkbox" name="programmingLanguages" value="Matlab"> Matlab
+            <input type="checkbox" name="programmingLanguages" value="Simulink"> Simulink
+            <input type="checkbox" name="programmingLanguages" value="Python"> Python
+            <input type="checkbox" name="programmingLanguages" value="C++"> C++
+            <input type="checkbox" name="programmingLanguages" value="C"> C
+            <input type="checkbox" name="programmingLanguages" value="R"> R
+            <input type="checkbox" name="programmingLanguages" value="Java"> Java
+            <input type="checkbox" name="programmingLanguages" value="Go"> Go
+            <input type="checkbox" name="programmingLanguages" value="SQL"> SQL
+            <input type="checkbox" name="programmingLanguages" value="JavaScript"> JavaScript
+            <input type="checkbox" name="programmingLanguages" value="Julia"> Julia
+        </div>
+
         <!-- Submit Button -->
-        <button type="submit">Submit</button>
+        <button type="submit" onclick="saveFormValues()">Submit</button>
     </form>
 
     <script>
-        let branchValue = 0;
-        let dualBranchValue = 0;
-
         function showBranchQuestion() {
             const branch = document.getElementById("branch").value;
             const branchLikeQuestion = document.getElementById("branchLikeQuestion");
@@ -99,31 +112,22 @@
             updateBranchRatings();
         }
 
-        function assignBranchValue(value) {
-            branchValue = value;
-            document.getElementById("branchLikeQuestion").style.display = "none";
-        }
-
         function assignDualBranchValue() {
             const dualBranch = document.getElementById("dualBranch").value;
-            dualBranchValue = dualBranch !== "None" ? 7.5 : 0;
-
+            document.getElementById("interestRating").style.display = dualBranch ? "block" : "none";
             updateBranchRatings();
-            updateOpels();
         }
 
         function updateBranchRatings() {
             const branch = document.getElementById("branch").value;
             const dualBranch = document.getElementById("dualBranch").value;
             const branchRatings = document.getElementById("branchRatings");
-
             const allBranches = ["CS", "ECE", "EEE", "ENI", "MECH", "CHEM", "CIVIL"];
             const allDualBranches = ["ECO", "MATH", "PHYSICS", "CHEMISTRY", "BIO"];
             branchRatings.innerHTML = "";
 
-            // Exclude primary and dual branch from the ratings
             allBranches.forEach(br => {
-                if (br !== branch && br !== "PHARMA" && !(branch === "MNC" && (br === "CS" || br === "MATH"))) {
+                if (br !== branch) {
                     const ratingDiv = document.createElement("div");
                     ratingDiv.innerHTML = `
                         <label>${br}</label>
@@ -138,9 +142,8 @@
                 }
             });
 
-            // Include all dual branches except the selected dual branch and None
             allDualBranches.forEach(dualBr => {
-                if (dualBr !== dualBranch && !(branch === "MNC" && dualBr === "MATH")) {
+                if (dualBr !== dualBranch) {
                     const ratingDiv = document.createElement("div");
                     ratingDiv.innerHTML = `
                         <label>${dualBr}</label>
@@ -154,14 +157,21 @@
                     branchRatings.appendChild(ratingDiv);
                 }
             });
-
-            document.getElementById("interestRating").style.display = "block";
         }
 
-        function updateOpels() {
-            const dualBranch = document.getElementById("dualBranch").value;
-            const financeOpel = document.getElementById("Finance");
-            financeOpel.style.display = dualBranch === "ECO" ? "none" : "block";
+        function saveFormValues() {
+            const formData = new FormData(document.getElementById("surveyForm"));
+            const data = {};
+
+            for (const [key, value] of formData.entries()) {
+                data[key] = value || 0;
+            }
+
+            fetch("/saveData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
         }
     </script>
 </body>
